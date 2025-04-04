@@ -1,0 +1,1106 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Advanced Manufacturing Technology</title>
+    <style>
+        :root {
+            --primary-color: #3498db;
+            --secondary-color: #2c3e50;
+            --success-color: #2ecc71;
+            --danger-color: #e74c3c;
+            --light-color: #ecf0f1;
+            --dark-color: #34495e;
+        }
+
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            margin: 0;
+            padding: 0;
+            background-color: #f8f9fa;
+            color: #333;
+            line-height: 1.6;
+        }
+
+        .container {
+            max-width: 900px;
+            margin: 0 auto;
+            padding: 20px;
+        }
+
+        .card {
+            background-color: white;
+            border-radius: 10px;
+            box-shadow: 0 5px 15px rgba(0, 0, 0, 0.1);
+            padding: 30px;
+            margin-bottom: 20px;
+        }
+
+        h1, h2, h3 {
+            color: var(--secondary-color);
+            margin-top: 0;
+        }
+
+        h1 {
+            font-size: 2.2rem;
+            margin-bottom: 10px;
+        }
+
+        h2 {
+            font-size: 1.8rem;
+            margin-bottom: 20px;
+            font-weight: 500;
+        }
+
+        .header {
+            text-align: center;
+            margin-bottom: 30px;
+            background-color: var(--secondary-color);
+            color: white;
+            padding: 20px;
+            border-radius: 10px;
+        }
+
+        .header h1 {
+            color: white;
+        }
+
+        .btn {
+            display: inline-block;
+            background-color: var(--primary-color);
+            color: white;
+            padding: 12px 24px;
+            border: none;
+            border-radius: 5px;
+            cursor: pointer;
+            font-size: 1rem;
+            transition: all 0.3s ease;
+            text-decoration: none;
+        }
+
+        .btn:hover {
+            background-color: #2980b9;
+            transform: translateY(-2px);
+            box-shadow: 0 5px 10px rgba(0, 0, 0, 0.1);
+        }
+
+        .btn:disabled {
+            background-color: #95a5a6;
+            cursor: not-allowed;
+            transform: none;
+            box-shadow: none;
+        }
+
+        .btn-danger {
+            background-color: var(--danger-color);
+        }
+
+        .btn-danger:hover {
+            background-color: #c0392b;
+        }
+
+        .hidden {
+            display: none;
+        }
+
+        .timer {
+            font-size: 1.5rem;
+            font-weight: bold;
+            text-align: center;
+            margin: 20px 0;
+            color: var(--danger-color);
+            background-color: rgba(231, 76, 60, 0.1);
+            padding: 10px;
+            border-radius: 5px;
+        }
+
+        .progress-container {
+            margin: 20px 0;
+        }
+
+        .progress-bar {
+            height: 10px;
+            background-color: var(--light-color);
+            border-radius: 5px;
+            overflow: hidden;
+        }
+
+        .progress {
+            height: 100%;
+            background-color: var(--success-color);
+            width: 0%;
+            transition: width 0.3s ease;
+        }
+
+        .question-count {
+            text-align: right;
+            color: var(--dark-color);
+            font-weight: 500;
+        }
+
+        .question {
+            margin-bottom: 30px;
+            padding: 20px;
+            border-left: 5px solid var(--primary-color);
+            background-color: #f8f9fa;
+            border-radius: 0 5px 5px 0;
+        }
+
+        .question-text {
+            font-size: 1.2rem;
+            margin-bottom: 20px;
+            font-weight: 500;
+        }
+
+        .options {
+            margin-left: 10px;
+        }
+
+        .option {
+            margin-bottom: 15px;
+            display: flex;
+            align-items: center;
+        }
+
+        .option input {
+            margin-right: 15px;
+            transform: scale(1.2);
+        }
+
+        .option label {
+            cursor: pointer;
+            font-size: 1.1rem;
+        }
+
+        .login-form {
+            max-width: 500px;
+            margin: 0 auto;
+        }
+
+        .form-group {
+            margin-bottom: 20px;
+        }
+
+        .form-group label {
+            display: block;
+            margin-bottom: 8px;
+            font-weight: 500;
+        }
+
+        .form-control {
+            width: 100%;
+            padding: 12px;
+            border: 1px solid #ddd;
+            border-radius: 5px;
+            font-size: 1rem;
+            transition: border 0.3s ease;
+        }
+
+        .form-control:focus {
+            border-color: var(--primary-color);
+            outline: none;
+        }
+
+        .instructions {
+            background-color: #f0f8ff;
+            padding: 20px;
+            border-radius: 5px;
+            margin-bottom: 30px;
+        }
+
+        .instructions ol {
+            padding-left: 20px;
+        }
+
+        .instructions li {
+            margin-bottom: 10px;
+        }
+
+        .student-info {
+            display: flex;
+            justify-content: space-between;
+            margin-bottom: 20px;
+            font-weight: 500;
+        }
+
+        .result-card {
+            text-align: center;
+        }
+
+        .score {
+            font-size: 3rem;
+            color: var(--success-color);
+            font-weight: bold;
+            margin: 20px 0;
+        }
+
+        .summary {
+            text-align: left;
+            max-width: 600px;
+            margin: 0 auto;
+        }
+
+        .footer {
+            text-align: center;
+            margin-top: 40px;
+            color: #7f8c8d;
+            font-size: 0.9rem;
+        }
+
+        @media (max-width: 768px) {
+            .container {
+                padding: 15px;
+            }
+
+            .card {
+                padding: 20px;
+            }
+
+            h1 {
+                font-size: 1.8rem;
+            }
+
+            h2 {
+                font-size: 1.5rem;
+            }
+
+            .question-text {
+                font-size: 1.1rem;
+            }
+
+            .option label {
+                font-size: 1rem;
+            }
+        }
+    </style>
+</head>
+
+<body>
+    <div class="container">
+        <!-- Landing Page -->
+        <div id="landing-page">
+            <div class="header">      
+                <h2 style="color: white;">201- P.T.Lee Chengalvararaya Naicker Polytechnic College</h2>
+                <h2 style="color: white;">Department of Mechanical Engineering</h2>
+                <h2 style="color: white;">CONTINUOUS ASSESSMENT TEST - 3</h2>
+                <h2 style="color: white;">1020234320 - Advanced Manufacturing Technology</h2>
+                <p>Course: IV Semester Mechanical Engineering - Full Time</p>
+            </div>
+
+            <div class="card">
+                <h3>Test Information</h3>
+                <p><strong>Date:</strong> April 5, 2025</p>
+                <p><strong>Time:</strong> 4:00 PM to 6:00 PM</p>
+                <p><strong>Duration:</strong> 60 minutes (test will automatically submit at 6:00 PM)</p>
+                <p><strong>Max Marks:</strong> 60 (1 mark per question)</p>
+
+                <div class="instructions">
+                    <h3>Instructions:</h3>
+                    <ol>
+                        <li>This test is only for registered students of IV Semester Mechanical Engineering.</li>
+                        <li>You must enter your correct register number to start the test.</li>
+                        <li>The test contains 60 multiple-choice questions.</li>
+                        <li>Each question carries 1 mark.</li>
+                        <li>Once you move to the next question, you cannot go back.</li>
+                        <li>The test will automatically submit at 6:00 PM regardless of when you started.</li>
+                        <li>Your remaining time will be calculated based on when you start the test.</li>
+                        <li>Do not refresh the page or navigate away during the test.</li>
+                    </ol>
+                </div>
+
+                <div style="text-align: center;">
+                    <button id="start-btn" class="btn">Proceed to Test</button>
+                </div>
+            </div>
+
+            <div class="footer">
+                <p>Department of Mechanical Engineering</p>
+            </div>
+        </div>
+
+        <!-- Login Section -->
+        <div id="login-section" class="hidden">
+            <div class="header">
+                <h1>Test Authentication</h1>
+                <p>Please enter your register number to begin the test</p>
+            </div>
+
+            <div class="card">
+                <div class="login-form">
+                    <div class="form-group">
+                        <label for="reg-number">Register Number:</label>
+                        <input type="text" id="reg-number" class="form-control" placeholder="Enter your register number"
+                            required>
+                        <small id="reg-error" style="color: var(--danger-color); display: none;">This register number is
+                            not authorized for this test.</small>
+                    </div>
+
+                    <div class="form-group">
+                        <label for="student-name">Your Name:</label>
+                        <input type="text" id="student-name" class="form-control" readonly>
+                    </div>
+
+                    <div style="text-align: center;">
+                        <button id="verify-btn" class="btn">Verify & Start Test</button>
+                        <button id="back-btn" class="btn"
+                            style="background-color: #7f8c8d; margin-left: 10px;">Back</button>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Test Section -->
+        <div id="test-section" class="hidden">
+            <div class="student-info">
+                <div id="student-details"></div>
+                <div id="question-number"></div>
+            </div>
+
+            <div class="timer">
+                Time Remaining: <span id="time">60:00</span>
+            </div>
+
+            <div class="progress-container">
+                <div class="progress-bar">
+                    <div class="progress" id="progress-bar"></div>
+                </div>
+            </div>
+
+            <div id="question-container">
+                <!-- Questions will be loaded here -->
+            </div>
+
+            <div style="text-align: center; margin-top: 30px;">
+                <button id="next-btn" class="btn" disabled>Next Question</button>
+            </div>
+        </div>
+
+        <!-- Submission Section -->
+        <div id="submission-section" class="hidden">
+            <div class="header">
+                <h1>Test Submitted Successfully</h1>
+            </div>
+
+            <div class="card result-card">
+                <div id="student-result-details"></div>
+
+                <div class="score" id="score-display"></div>
+
+                <div class="summary" id="result-summary"></div>
+
+                <div style="text-align: center; margin-top: 30px;">
+                    <button id="finish-btn" class="btn">Finish</button>
+                </div>
+            </div>
+
+            <div class="footer">
+                <p>Thank you for taking the test</p>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        // Student data
+        const students = {
+            "24202379": "AKASH P",
+            "24220463": "AMOSE RENOLD D",
+            "24220464": "ASHRAF K",
+            "24202380": "BALA SUBRAMANI S",
+            "24202381": "BALAJI S",
+            "24220465": "CHANDRU U",
+            "24202385": "CITHESH B",
+            "24202386": "DEVESH KUMAAR V",
+            "24220466": "DHANUSH S",
+            "24202387": "DHAYANIDHI R",
+            "24202388": "DHINAKARAN S",
+            "24202389": "DHINESH C",
+            "24202390": "DINESH R",
+            "24202391": "GOKULA KRISHNAN V",
+            "24220468": "HARI D",
+            "24202392": "HARIHARAN S",
+            "24202393": "HARIPRIYAN G",
+            "24202395": "HARISH L",
+            "24220470": "JEEVITHA A",
+            "24202396": "JEROLD GRIMES.P",
+            "24220471": "JEROVADHAN.A",
+            "24220472": "KAARTHICK S",
+            "24202397": "KAMALESH V",
+            "24202398": "KAPILASH V",
+            "24220474": "KARTHIK M",
+            "24220475": "KRISHNAKUMAR V",
+            "24202399": "MADHAN KOWSHIK K N",
+            "24202400": "MADHAN PRABU K",
+            "24202401": "MADHESHWARAN R",
+            "24220476": "MAHENDRAN R",
+            "24220477": "MOHAMMAD ABRAAR I",
+            "24220478": "MOHAMMED AJARUDEEN S",
+            "24202402": "MOHAMMED HAJA HAMEED K",
+            "24220481": "MOHAN KUMAR S",
+            "24202403": "MONISHWAR K",
+            "24202404": "MUKESH V",
+            "24202405": "MUKESH KUMAR M",
+            "24290705": "ABINASH C",
+            "24296084": "ALLAN PRADEEP",
+            "24290706": "GOKUL RAJ A",
+            "24296086": "HARIKRISHNAN N",
+            "24296087": "JAGAN M",
+            "24290707": "KARTHIKE B",
+            "24290708": "KARTHIKEYAN M",
+            "24290710": "LOGESHWARAN V",
+            "24290711": "MAGESH M",
+            "24290712": "MOHAN M",
+            "24296088": "JANARTHIRAN S",
+            "23202345": "PRANESH KUMAR V",
+            "24202406": "MUKESH RAJ . P",
+            "24202407": "MUTHU VENKATESH M",
+            "24202408": "NAGANDARAN S",
+            "24220484": "NAGARAJ J",
+            "24202409": "NANDHAKUMAR D",
+            "24202410": "NARASIMMAN V",
+            "24220485": "PRADHAP S",
+            "24220486": "RAGESH KANNAN M",
+            "24220487": "RAGHUL C",
+            "24202411": "RAGUL V",
+            "24220488": "RAHUL M",
+            "24220490": "RAJKUMAR V",
+            "24220493": "SALAMON S",
+            "24202412": "SANTHOSH D",
+            "24220495": "SASI KUMAR A",
+            "24202413": "SHAIRISHEE D",
+            "24202414": "SHANMUGA PRIYAN V",
+            "24220496": "SHARMAN.S",
+            "24202415": "SHYAM PRASATH.U",
+            "24202416": "SRI PRIYAN . R",
+            "24202417": "SRIKANTH R",
+            "24202418": "SUDHARSUN.B",
+            "24220497": "SUDIPTA SAIKRISHNA",
+            "24220498": "SUREN KUMAR R",
+            "24220501": "SYED NISAMUDIN S",
+            "24202420": "TAMILMANI S",
+            "24202421": "THARUN . K",
+            "24202422": "THARUN N",
+            "24202423": "THARUN S",
+            "24220502": "VETRI S",
+            "24202424": "VIGNESHWARAN T",
+            "24202425": "VIJAYARAGHAVAN.A",
+            "24202426": "VIJYA SUNDAR S",
+            "24220503": "VIKRAM.K",
+            "24220504": "VISHAL J",
+            "24202427": "VISHAL S",
+            "24202428": "WILLINGTON CHRISTOPHER E",
+            "24202429": "YOKESH.N",
+            "24290713": "PARASURAM R",
+            "24290714": "PREMKUMAR D",
+            "24290715": "SAKTHIKUMAR",
+            "24290716": "SANTHOSH K",
+            "24290717": "SARATHKUMAR S",
+            "24296092": "YOGESHWARA RAO G",
+            "24202721": "SHANJEEV R",
+            "24296086": "ARULDOSS N",
+            "24296083": "ABINESH RAJ",
+            "24296089": "MC MILAN MILTON P"
+        };
+
+        // Test questions data
+        const questions = [
+            {
+                question: "Thermoplastics have _____ molecular structure.",
+                options: ["octahedral", "long chain", "cross linked", "tetrahedral"],
+                answer: 1
+            },
+            {
+                question: "_____ can be softened on heating but they become permanently hard on cooling.",
+                options: ["Thermosetting plastics", "Thermo plastics", "Structural foam", "Elastomers"],
+                answer: 0
+            },
+            {
+                question: "Which of the following is not a thermoplastic?",
+                options: ["Polyamide", "ABS", "Bakelite", "Polysulfone"],
+                answer: 2
+            },
+            {
+                question: "Thermoplastic rubbers are called as _____.",
+                options: ["thermosets", "LCP", "elastomers", "composites"],
+                answer: 2
+            },
+            {
+                question: "Structural foam is created by mixing a polymer with a _____.",
+                options: ["electrolyte", "blowing agent", "flux", "de-oxidizer"],
+                answer: 1
+            },
+            {
+                question: "Vectra is commercial name for _____.",
+                options: ["LCP", "elastomer", "composite", "structural foam"],
+                answer: 0
+            },
+            {
+                question: "In extruder, _____ feeds the material.",
+                options: ["hopper", "barrel", "screw", "plunger"],
+                answer: 0
+            },
+            {
+                question: "In a counter-rotating twin screw extruder, the screws rotate in ____ directions.",
+                options: ["same", "opposite", "clockwise", "anti-clockwise"],
+                answer: 1
+            },
+            {
+                question: "The raw material in plunger type injection moulding is _____.",
+                options: ["plastic resin", "molten plastic", "plastic powder", "plastic filament"],
+                answer: 2
+            },
+            {
+                question: "The method used to produce plastic parts with a cellular core and a solid outer skin is known as _____.",
+                options: ["extrusion", "casting", "sandwich moulding", "structural foam injection moulding"],
+                answer: 3
+            },
+            {
+                question: "The injection moulding method used to create hollow parts is _____.",
+                options: ["gas injection moulding", "sandwich moulding", "rotational moulding", "calendaring"],
+                answer: 2
+            },
+            {
+                question: "_____ process is used to produce thin sheets or films of plastic material.",
+                options: ["sandwich moulding", "calendaring", "extrusion", "rotational moulding"],
+                answer: 1
+            },
+            {
+                question: "Which one of the following is not a modern machining process?",
+                options: ["Precision machining", "nano machining", "hot machining", "milling"],
+                answer: 3
+            },
+            {
+                question: "Precision machining is used for producing components with tolerances in the range of _____.",
+                options: ["millimeters", "micrometers", "nanometers", "none of the above"],
+                answer: 1
+            },
+            {
+                question: "EDM is a type of _____ machining process.",
+                options: ["micro", "nano", "hot", "precision"],
+                answer: 3
+            },
+            {
+                question: "Nano machining is used to create components with _____ in the range of nanometers.",
+                options: ["tolerances", "dimensions", "deviations", "none of the above"],
+                answer: 1
+            },
+            {
+                question: "Heat is applied to a workpiece before or during machining in _____.",
+                options: ["high speed machining", "hot machining", "precision machining", "buffing"],
+                answer: 1
+            },
+            {
+                question: "Which one of the following is not a super finishing process?",
+                options: ["Honing", "Lapping", "Burnishing", "Turning"],
+                answer: 3
+            },
+            {
+                question: "Honing process is used to improve the surface finish of _____ surfaces.",
+                options: ["internal cylindrical", "external cylindrical", "flat", "irregular"],
+                answer: 0
+            },
+            {
+                question: "Say true or false: Material is not removed in burnishing process.",
+                options: ["True", "False"],
+                answer: 0
+            },
+            {
+                question: "The final step after polishing to achieve the desired level of shine and smoothness is _____.",
+                options: ["honing", "buffing", "grinding", "burnishing"],
+                answer: 1
+            },
+            {
+                question: "Surface hardening is used to increase the hardness of _____.",
+                options: ["entire material", "inner layer of material", "outer layer of material", "none of the above"],
+                answer: 2
+            },
+            {
+                question: "The surface treatment process used to improve the fatigue strength is _____.",
+                options: ["carburizing", "nitriding", "cladding", "shot peening"],
+                answer: 3
+            },
+            {
+                question: "Galvanizing is a process of coating a layer of _____.",
+                options: ["zinc", "aluminium", "copper", "tin"],
+                answer: 0
+            },
+            {
+                question: "Which one of the following is not an unconventional machining process?",
+                options: ["Abrasive Jet Machining", "Electrical Discharge Machining", "Surface Grinding", "Laser Beam Machining"],
+                answer: 2
+            },
+            {
+                question: "The method of metal removal in abrasive jet machining is _____.",
+                options: ["mechanical erosion", "melting and vaporization", "abrasion and erosion", "spark erosion"],
+                answer: 2
+            },
+            {
+                question: "_____ can be used as abrasive particles in AJM.",
+                options: ["Aluminium oxide", "Silicon carbide", "Glass powder", "All of the above"],
+                answer: 3
+            },
+            {
+                question: "In WJM, the material is removed when the pressure of water jet exceeds _____ of the material.",
+                options: ["yield stress", "ultimate shear stress", "breaking stress", "none of the above"],
+                answer: 1
+            },
+            {
+                question: "The method of metal removal is abrasion and erosion in ____ machining.",
+                options: ["WJM", "USM", "ECM", "EBM"],
+                answer: 1
+            },
+            {
+                question: "The transducer in USM converts the high frequency current into _____.",
+                options: ["low frequency current", "high voltage", "mechanical vibrations", "none of the above"],
+                answer: 2
+            },
+            {
+                question: "In EDM, the work piece is connected to the _____ terminal",
+                options: ["positive", "negative", "either positive or negative", "none of the above"],
+                answer: 0
+            },
+            {
+                question: "The purpose of hole in the tool used in EDM is to supply _____.",
+                options: ["abrasives", "coolant", "dielectric fluid", "compressed air"],
+                answer: 2
+            },
+            {
+                question: "_____ process is done in a vacuum chamber.",
+                options: ["EDM", "EBM", "ECM", "AJM"],
+                answer: 1
+            },
+            {
+                question: "The method of metal removal in LBM is _____.",
+                options: ["mechanical erosion", "melting and vaporization", "abrasion and erosion", "spark erosion"],
+                answer: 1
+            },
+            {
+                question: "In PAM, electric spark is produced between the _____.",
+                options: ["workpiece and tool", "workpiece and electrode", "nozzle and electrode", "tool and electrode"],
+                answer: 2
+            },
+            {
+                question: "The hot chemical used in chemical machining is called _____.",
+                options: ["electrolyte", "dielectric fluid", "solvent", "etchant"],
+                answer: 3
+            },
+            {
+                question: "The list of instructions written in the numerical codes is called _____.",
+                options: ["input list", "machine program", "part program", "database"],
+                answer: 2
+            },
+            {
+                question: "ATC stands for _____.",
+                options: ["Advanced Tool Carriage", "Automatic Tool Changer", "Advanced Tool Changer", "Automatic Tool Carriage"],
+                answer: 1
+            },
+            {
+                question: "A combined machine tool which can perform the turning and milling operations in the same machine tool is known as _____.",
+                options: ["universal machining centre", "hybrid turning centre", "Turn-mill centre", "advanced machining centre"],
+                answer: 2
+            },
+            {
+                question: "The principal motion direction of cutting tool or the work piece is designated as _____.",
+                options: ["X-axis", "Y-axis", "Z-axis", "none of the above"],
+                answer: 2
+            },
+            {
+                question: "The main sensing device of a CMM is _____.",
+                options: ["arm", "probe", "stylus", "structure"],
+                answer: 1
+            },
+            {
+                question: "_____ are used to determine the exact position of the probe in CMM.",
+                options: ["transducers", "recorders", "encoders", "decoders"],
+                answer: 2
+            },
+            {
+                question: "The guiding coordinate system followed for designating the axes is _____.",
+                options: ["right hand coordinate system", "left hand coordinated system", "cartesian coordinate system", "polar coordinate system"],
+                answer: 0
+            },
+            {
+                question: "In _____ positioning, the coordinates of a point are always defined with respect to the origin.",
+                options: ["absolute", "incremental", "relative", "polar"],
+                answer: 0
+            },
+            {
+                question: "The command used in CNC turning to move the axes to home position is _____.",
+                options: ["G28 X0 Z0", "G28 U0 V0", "G28 U0 W0", "G00 X0 Z0"],
+                answer: 0
+            },
+            {
+                question: "The difference between the tool tip position and the turret datum is termed as_____.",
+                options: ["work offset", "tool offset", "tool length compensation", "turret offset"],
+                answer: 1
+            },
+            {
+                question: "The miscellaneous function used for tool selection is _____.",
+                options: ["M06", "M30", "M03", "M05"],
+                answer: 0
+            },
+            {
+                question: "The G-code to set the maximum spindle speed is _____.",
+                options: ["G00", "G40", "G41", "G50"],
+                answer: 3
+            },
+            {
+                question: "A manufacturing technique used to quickly create models or simulations of a product is called _____.",
+                options: ["rapid manufacturing", "rapid prototyping", "quick manufacturing", "none of the above"],
+                answer: 1
+            },
+            {
+                question: "In _____ process, 3D objects are constructed by successively adding layers of material.",
+                options: ["additive manufacturing", "subtractive manufacturing", "layer manufacturing", "constructive manufacturing"],
+                answer: 0
+            },
+            {
+                question: "The following process uses photochemical method to create three-dimensional objects from liquid resin.",
+                options: ["Stereolithography", "Selective Laser Sintering", "Fused Deposition Modelling", "3D printing"],
+                answer: 0
+            },
+            {
+                question: "SLS stands for _____.",
+                options: ["Stereo Litho Sintering", "Selective Laser Sintering", "Selective Laser Sizing", "Selective Light Sintering"],
+                answer: 1
+            },
+            {
+                question: "The material used in SLS process is _____.",
+                options: ["photopolymer resin", "thermoplastic powder", "thermoplastic filament", "none of the above"],
+                answer: 1
+            },
+            {
+                question: "Support structures must be provided for overhanging geometries in _____ process.",
+                options: ["Selective Laser Sintering", "Fused Deposition Modelling", "3D printing", "Stereolithography"],
+                answer: 1
+            },
+            {
+                question: "The material used in FDM process is _____.",
+                options: ["photopolymer resin", "thermoplastic powder", "thermoplastic filament", "none of the above"],
+                answer: 2
+            },
+            {
+                question: "The parts made by 3D printing must be _____ before they can be handled.",
+                options: ["hardened", "infiltrated", "sintered", "tempered"],
+                answer: 1
+            },
+            {
+                question: "The process used for producing moulds quickly using rapid prototyping techniques is known as _____.",
+                options: ["Rapid Tooling", "Rapid Moulding", "Quick Tooling", "Quick Moulding"],
+                answer: 0
+            },
+            {
+                question: "_____ is a rapid manufacturing technique used for repair works.",
+                options: ["Fused Deposition Modeling", "3D Printing", "Direct Energy Deposition", "Stereolithography"],
+                answer: 2
+            },
+            {
+                question: "_____ process involves stacking layers of material and bonding them using heat and pressure.",
+                options: ["Fused Deposition Modeling", "Laminated Object Manufacturing", "Direct Energy Deposition", "Binder Jetting"],
+                answer: 1
+            },
+            {
+                question: "_____ is a photopolymer jetting process used to create multi-color parts.",
+                options: ["PolyJet", "Digital Light Processing", "Selective Laser Sintering", "Binder Jetting"],
+                answer: 0
+            }
+        ];
+
+        // Test state variables
+        let currentQuestion = 0;
+        let userAnswers = Array(questions.length).fill(null);
+        let regNumber = "";
+        let studentName = "";
+        let timer;
+        let timeLeft = 60 * 60; // Initial 60 minutes (will be adjusted based on start time)
+        let testEndTime = new Date("April 5, 2025 18:00:00").getTime(); // 6:00 PM
+
+        // DOM elements
+        const landingPage = document.getElementById('landing-page');
+        const loginSection = document.getElementById('login-section');
+        const testSection = document.getElementById('test-section');
+        const submissionSection = document.getElementById('submission-section');
+        const regNumberInput = document.getElementById('reg-number');
+        const studentNameInput = document.getElementById('student-name');
+        const startBtn = document.getElementById('start-btn');
+        const verifyBtn = document.getElementById('verify-btn');
+        const backBtn = document.getElementById('back-btn');
+        const questionContainer = document.getElementById('question-container');
+        const nextBtn = document.getElementById('next-btn');
+        const timeDisplay = document.getElementById('time');
+        const progressBar = document.getElementById('progress-bar');
+        const scoreDisplay = document.getElementById('score-display');
+        const studentDetails = document.getElementById('student-details');
+        const questionNumber = document.getElementById('question-number');
+        const studentResultDetails = document.getElementById('student-result-details');
+        const resultSummary = document.getElementById('result-summary');
+        const finishBtn = document.getElementById('finish-btn');
+        const regError = document.getElementById('reg-error');
+
+        // Event listeners
+        startBtn.addEventListener('click', showLogin);
+        verifyBtn.addEventListener('click', verifyStudent);
+        backBtn.addEventListener('click', showLanding);
+        nextBtn.addEventListener('click', nextQuestion);
+        finishBtn.addEventListener('click', () => {
+            window.location.reload(); // Refresh page to start over
+        });
+
+        // Show login section
+        function showLogin() {
+            landingPage.classList.add('hidden');
+            loginSection.classList.remove('hidden');
+        }
+
+        // Show landing page
+        function showLanding() {
+            loginSection.classList.add('hidden');
+            landingPage.classList.remove('hidden');
+        }
+
+        // Verify student and start test
+        function verifyStudent() {
+            regNumber = regNumberInput.value.trim();
+
+            if (!regNumber) {
+                alert("Please enter your register number");
+                return;
+            }
+
+            // Check if register number exists
+            if (students.hasOwnProperty(regNumber)) {
+                studentName = students[regNumber];
+                studentNameInput.value = studentName;
+                regError.style.display = 'none';
+                startTest();
+            } else {
+                regError.style.display = 'block';
+            }
+        }
+
+        // Prevent refresh/navigation during test
+        function setupBeforeUnload() {
+            window.addEventListener('beforeunload', (e) => {
+                if (testSection.classList.contains('hidden') === false) {
+                    e.preventDefault();
+                    e.returnValue = 'Your test progress will be lost if you leave this page. Are you sure?';
+                    return e.returnValue;
+                }
+            });
+
+            // Disable right click
+            document.addEventListener('contextmenu', (e) => {
+                if (testSection.classList.contains('hidden') === false) {
+                    e.preventDefault();
+                }
+            });
+
+            // Disable keyboard shortcuts
+            document.addEventListener('keydown', (e) => {
+                if (testSection.classList.contains('hidden') === false) {
+                    // Block F5, Ctrl+R, Ctrl+Shift+R, etc.
+                    if (e.key === 'F5' ||
+                        (e.ctrlKey && e.key === 'r') ||
+                        (e.ctrlKey && e.shiftKey && e.key === 'R') ||
+                        e.key === 'F11') {
+                        e.preventDefault();
+                    }
+                }
+            });
+        }
+
+        // Start the test
+        function startTest() {
+            setupBeforeUnload();
+
+            loginSection.classList.add('hidden');
+            testSection.classList.remove('hidden');
+
+            // Set up student details display
+            studentDetails.innerHTML = `<strong>Register No:</strong> ${regNumber} | <strong>Name:</strong> ${studentName}`;
+
+            // Calculate time remaining based on current time
+            const now = new Date().getTime();
+            const testStartTime = Math.max(now, new Date("April 5, 2025 16:00:00").getTime()); // Can't start before 4:00 PM
+            const adjustedEndTime = Math.min(testEndTime, testStartTime + 60 * 60 * 1000); // 60 minutes from start or 6:00 PM
+
+            timeLeft = Math.floor((adjustedEndTime - now) / 1000);
+            if (timeLeft < 0) timeLeft = 0;
+
+            // Start timer
+            updateTimerDisplay();
+            timer = setInterval(updateTimer, 1000);
+
+            // Load first question
+            loadQuestion();
+        }
+
+        // Update timer
+        function updateTimer() {
+            timeLeft--;
+            updateTimerDisplay();
+
+            if (timeLeft <= 0) {
+                clearInterval(timer);
+                submitTest();
+            }
+        }
+
+        // Update timer display
+        function updateTimerDisplay() {
+            const minutes = Math.floor(timeLeft / 60);
+            const seconds = timeLeft % 60;
+            timeDisplay.textContent = `${minutes.toString().padStart(2, '0')}:${seconds.toString().padStart(2, '0')}`;
+        }
+
+        // Load question
+        function loadQuestion() {
+            // Update question number display
+            questionNumber.textContent = `Question ${currentQuestion + 1} of ${questions.length}`;
+
+            // Update progress bar
+            progressBar.style.width = `${(currentQuestion / questions.length) * 100}%`;
+
+            const q = questions[currentQuestion];
+            let html = `
+                <div class="question">
+                    <div class="question-text">${q.question}</div>
+                    <div class="options">
+            `;
+
+            q.options.forEach((option, index) => {
+                const isChecked = userAnswers[currentQuestion] === index ? 'checked' : '';
+                html += `
+                    <div class="option">
+                        <input type="radio" name="answer" value="${index}" id="option-${index}" ${isChecked}>
+                        <label for="option-${index}">${option}</label>
+                    </div>
+                `;
+            });
+
+            html += `</div></div>`;
+            questionContainer.innerHTML = html;
+
+            // Enable/disable next button based on whether an answer is selected
+            nextBtn.disabled = userAnswers[currentQuestion] === null;
+
+            // Add event listeners to radio buttons
+            document.querySelectorAll('input[name="answer"]').forEach(radio => {
+                radio.addEventListener('change', () => {
+                    userAnswers[currentQuestion] = parseInt(radio.value);
+                    nextBtn.disabled = false;
+                });
+            });
+        }
+
+        // Move to next question
+        function nextQuestion() {
+            if (userAnswers[currentQuestion] === null) {
+                alert("Please select an answer before proceeding");
+                return;
+            }
+
+            currentQuestion++;
+
+            if (currentQuestion < questions.length) {
+                loadQuestion();
+            } else {
+                submitTest();
+            }
+        }
+
+        // Submit the test
+        function submitTest() {
+            clearInterval(timer);
+
+            // Calculate score and prepare answer data
+            let score = 0;
+            const answerData = userAnswers.map((answer, index) => {
+                const isCorrect = answer === questions[index].answer;
+                if (isCorrect) score++;
+                return isCorrect ? 1 : 0;
+            });
+
+            // Calculate percentage
+            const percentage = ((score / questions.length) * 100).toFixed(1);
+
+            // Save results
+            saveResults(regNumber, studentName, answerData, score, percentage);
+
+            // Show submission section
+            testSection.classList.add('hidden');
+            submissionSection.classList.remove('hidden');
+
+            // Display results
+            studentResultDetails.innerHTML = `
+                <p><strong>Register No:</strong> ${regNumber}</p>
+                <p><strong>Name:</strong> ${studentName}</p>
+                <p><strong>Test Date:</strong> April 5, 2025</p>
+                <p><strong>Submission Time:</strong> ${new Date().toLocaleTimeString()}</p>
+            `;
+
+            scoreDisplay.textContent = `${score} / ${questions.length}`;
+
+            resultSummary.innerHTML = `
+                <p><strong>Percentage:</strong> ${percentage}%</p>
+                <p><strong>Correct Answers:</strong> ${score}</p>
+                <p><strong>Incorrect Answers:</strong> ${questions.length - score}</p>
+                <p><strong>Unanswered:</strong> ${userAnswers.filter(a => a === null).length}</p>
+            `;
+        }
+
+        // Save results to Google Sheets
+        function saveResults(regNumber, name, answers, score, percentage) {
+            const scriptURL = 'https://script.google.com/macros/s/AKfycbwQ2ogScUmNWvEkPwMRNyOzhX74Kgu2vx3Enmc09DJAflGURATOeMzG9KZJI_fyh0Al/exec';
+
+            const data = {
+                regNumber: regNumber,
+                name: name,
+                answers: answers,
+                score: score,
+                percentage: percentage,
+                timestamp: new Date().toISOString()
+            };
+
+            fetch(scriptURL, {
+                method: 'POST',
+                mode: 'no-cors',
+                body: JSON.stringify(data),
+                headers: {
+                    'Content-Type': 'application/json'
+                }
+            })
+            .then(() => {
+                console.log('Results submitted successfully');
+                // Remove any offline saved results for this student
+                const offlineResults = JSON.parse(localStorage.getItem('offlineTestResults') || '[]');
+                const updatedOfflineResults = offlineResults.filter(r => r.regNumber !== regNumber);
+                localStorage.setItem('offlineTestResults', JSON.stringify(updatedOfflineResults));
+            })
+            .catch(error => {
+                console.error('Error saving results:', error);
+                // Fallback to localStorage
+                const offlineResults = JSON.parse(localStorage.getItem('offlineTestResults') || '[]');
+                offlineResults.push(data);
+                localStorage.setItem('offlineTestResults', JSON.stringify(offlineResults));
+                alert("Your results have been saved locally and will be submitted when you reconnect.");
+            });
+        }
+
+        // Check for and submit any offline results when page loads
+        function checkOfflineResults() {
+            const offlineResults = JSON.parse(localStorage.getItem('offlineTestResults') || '[]');
+            if (offlineResults.length > 0) {
+                // Try to submit each offline result
+                offlineResults.forEach(result => {
+                    saveResults(result.regNumber, result.name, result.answers, result.score, result.percentage);
+                });
+            }
+        }
+
+        // Initialize the page
+        window.addEventListener('load', checkOfflineResults);
+    </script>
+</body>
+</html>
