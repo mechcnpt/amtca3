@@ -813,8 +813,8 @@
         let regNumber = "";
         let studentName = "";
         let timer;
-        let timeLeft = 60 * 60; // Initial 60 minutes (will be adjusted based on start time)
-        let testEndTime = new Date("April 8, 2025 18:00:00").getTime(); // 6:00 PM
+        let testEndTime;
+        let timeLeft;
 
         // DOM elements
         const landingPage = document.getElementById('landing-page');
@@ -849,6 +849,24 @@
 
         // Show login section
         function showLogin() {
+            // Check if current time is between 4 PM and 6 PM
+            const now = new Date();
+            const testStartTime = new Date(now);
+            testStartTime.setHours(16, 0, 0, 0); // 4 PM
+            
+            const testEndTime = new Date(now);
+            testEndTime.setHours(18, 0, 0, 0); // 6 PM
+
+            if (now < testStartTime) {
+                alert("The test will begin at 4:00 PM. Please come back then.");
+                return;
+            }
+
+            if (now >= testEndTime) {
+                alert("The test has ended at 6:00 PM. No more submissions are accepted.");
+                return;
+            }
+
             landingPage.classList.add('hidden');
             loginSection.classList.remove('hidden');
         }
@@ -920,12 +938,16 @@
             // Set up student details display
             studentDetails.innerHTML = `<strong>Register No:</strong> ${regNumber} | <strong>Name:</strong> ${studentName}`;
 
-            // Calculate time remaining based on current time
-            const now = new Date().getTime();
-            const testStartTime = Math.max(now, new Date("April 8, 2025 16:00:00").getTime()); // Can't start before 4:00 PM
-            const adjustedEndTime = Math.min(testEndTime, testStartTime + 60 * 60 * 1000); // 60 minutes from start or 6:00 PM
-
-            timeLeft = Math.floor((adjustedEndTime - now) / 1000);
+            // Calculate time remaining
+            const now = new Date();
+            testEndTime = new Date(now);
+            testEndTime.setHours(18, 0, 0, 0); // 6 PM
+            
+            // Calculate time left in seconds (minimum of 60 minutes or time until 6 PM)
+            const maxTestDuration = 60 * 60; // 60 minutes in seconds
+            const timeUntilEnd = Math.floor((testEndTime - now) / 1000);
+            timeLeft = Math.min(maxTestDuration, timeUntilEnd);
+            
             if (timeLeft < 0) timeLeft = 0;
 
             // Start timer
@@ -936,171 +958,171 @@
             loadQuestion();
         }
 
-        // Update timer
-        function updateTimer() {
-            timeLeft--;
-            updateTimerDisplay();
+// Update timer
+function updateTimer() {
+    timeLeft--;
+    updateTimerDisplay();
 
-            if (timeLeft <= 0) {
-                clearInterval(timer);
-                submitTest();
-            }
+    if (timeLeft <= 0) {
+        clearInterval(timer);
+        submitTest();
+    }
+}
+
+// Update timer display
+function updateTimerDisplay() {
+    const minutes = Math.floor(timeLeft / 60);
+    const seconds = timeLeft % 60;
+    timeDisplay.textContent = `${minutes.toString().padStart(2, '0')}:${seconds.toString().padStart(2, '0')}`;
+}
+
+// Load question
+function loadQuestion() {
+    // Update question number display
+    questionNumber.textContent = `Question ${currentQuestion + 1} of ${questions.length}`;
+
+    // Update progress bar
+    progressBar.style.width = `${(currentQuestion / questions.length) * 100}%`;
+
+    const q = questions[currentQuestion];
+    let html = `
+        <div class="question">
+            <div class="question-text">${q.question}</div>
+            <div class="options">
+    `;
+
+    q.options.forEach((option, index) => {
+        const isChecked = userAnswers[currentQuestion] === index ? 'checked' : '';
+        html += `
+            <div class="option">
+                <input type="radio" name="answer" value="${index}" id="option-${index}" ${isChecked}>
+                <label for="option-${index}">${option}</label>
+            </div>
+        `;
+    });
+
+    html += `</div></div>`;
+    questionContainer.innerHTML = html;
+
+    // Enable/disable next button based on whether an answer is selected
+    nextBtn.disabled = userAnswers[currentQuestion] === null;
+
+    // Add event listeners to radio buttons
+    document.querySelectorAll('input[name="answer"]').forEach(radio => {
+        radio.addEventListener('change', () => {
+            userAnswers[currentQuestion] = parseInt(radio.value);
+            nextBtn.disabled = false;
+        });
+    });
+}
+
+// Move to next question
+function nextQuestion() {
+    if (userAnswers[currentQuestion] === null) {
+        alert("Please select an answer before proceeding");
+        return;
+    }
+
+    currentQuestion++;
+
+    if (currentQuestion < questions.length) {
+        loadQuestion();
+    } else {
+        submitTest();
+    }
+}
+
+// Submit the test
+function submitTest() {
+    clearInterval(timer);
+
+    // Calculate score and prepare answer data
+    let score = 0;
+    const answerData = userAnswers.map((answer, index) => {
+        const isCorrect = answer === questions[index].answer;
+        if (isCorrect) score++;
+        return isCorrect ? 1 : 0;
+    });
+
+    // Calculate percentage
+    const percentage = ((score / questions.length) * 100).toFixed(1);
+
+    // Save results
+    saveResults(regNumber, studentName, answerData, score, percentage);
+
+    // Show submission section
+    testSection.classList.add('hidden');
+    submissionSection.classList.remove('hidden');
+
+    // Display results
+    studentResultDetails.innerHTML = `
+        <p><strong>Register No:</strong> ${regNumber}</p>
+        <p><strong>Name:</strong> ${studentName}</p>
+        <p><strong>Test Date:</strong> April 8, 2025</p>
+        <p><strong>Submission Time:</strong> ${new Date().toLocaleTimeString()}</p>
+    `;
+
+    scoreDisplay.textContent = `${score} / ${questions.length}`;
+
+    resultSummary.innerHTML = `
+        <p><strong>Percentage:</strong> ${percentage}%</p>
+        <p><strong>Correct Answers:</strong> ${score}</p>
+        <p><strong>Incorrect Answers:</strong> ${questions.length - score}</p>
+        <p><strong>Unanswered:</strong> ${userAnswers.filter(a => a === null).length}</p>
+    `;
+}
+
+// Save results to Google Sheets
+function saveResults(regNumber, name, answers, score, percentage) {
+    const scriptURL = 'https://script.google.com/macros/s/AKfycbwQ2ogScUmNWvEkPwMRNyOzhX74Kgu2vx3Enmc09DJAflGURATOeMzG9KZJI_fyh0Al/exec';
+
+    const data = {
+        regNumber: regNumber,
+        name: name,
+        answers: answers,
+        score: score,
+        percentage: percentage,
+        timestamp: new Date().toISOString()
+    };
+
+    fetch(scriptURL, {
+        method: 'POST',
+        mode: 'no-cors',
+        body: JSON.stringify(data),
+        headers: {
+            'Content-Type': 'application/json'
         }
+    })
+    .then(() => {
+        console.log('Results submitted successfully');
+        // Remove any offline saved results for this student
+        const offlineResults = JSON.parse(localStorage.getItem('offlineTestResults') || '[]');
+        const updatedOfflineResults = offlineResults.filter(r => r.regNumber !== regNumber);
+        localStorage.setItem('offlineTestResults', JSON.stringify(updatedOfflineResults));
+    })
+    .catch(error => {
+        console.error('Error saving results:', error);
+        // Fallback to localStorage
+        const offlineResults = JSON.parse(localStorage.getItem('offlineTestResults') || '[]');
+        offlineResults.push(data);
+        localStorage.setItem('offlineTestResults', JSON.stringify(offlineResults));
+        alert("Your results have been saved locally and will be submitted when you reconnect.");
+    });
+}
 
-        // Update timer display
-        function updateTimerDisplay() {
-            const minutes = Math.floor(timeLeft / 60);
-            const seconds = timeLeft % 60;
-            timeDisplay.textContent = `${minutes.toString().padStart(2, '0')}:${seconds.toString().padStart(2, '0')}`;
-        }
+// Check for and submit any offline results when page loads
+function checkOfflineResults() {
+    const offlineResults = JSON.parse(localStorage.getItem('offlineTestResults') || '[]');
+    if (offlineResults.length > 0) {
+        // Try to submit each offline result
+        offlineResults.forEach(result => {
+            saveResults(result.regNumber, result.name, result.answers, result.score, result.percentage);
+        });
+    }
+}
 
-        // Load question
-        function loadQuestion() {
-            // Update question number display
-            questionNumber.textContent = `Question ${currentQuestion + 1} of ${questions.length}`;
-
-            // Update progress bar
-            progressBar.style.width = `${(currentQuestion / questions.length) * 100}%`;
-
-            const q = questions[currentQuestion];
-            let html = `
-                <div class="question">
-                    <div class="question-text">${q.question}</div>
-                    <div class="options">
-            `;
-
-            q.options.forEach((option, index) => {
-                const isChecked = userAnswers[currentQuestion] === index ? 'checked' : '';
-                html += `
-                    <div class="option">
-                        <input type="radio" name="answer" value="${index}" id="option-${index}" ${isChecked}>
-                        <label for="option-${index}">${option}</label>
-                    </div>
-                `;
-            });
-
-            html += `</div></div>`;
-            questionContainer.innerHTML = html;
-
-            // Enable/disable next button based on whether an answer is selected
-            nextBtn.disabled = userAnswers[currentQuestion] === null;
-
-            // Add event listeners to radio buttons
-            document.querySelectorAll('input[name="answer"]').forEach(radio => {
-                radio.addEventListener('change', () => {
-                    userAnswers[currentQuestion] = parseInt(radio.value);
-                    nextBtn.disabled = false;
-                });
-            });
-        }
-
-        // Move to next question
-        function nextQuestion() {
-            if (userAnswers[currentQuestion] === null) {
-                alert("Please select an answer before proceeding");
-                return;
-            }
-
-            currentQuestion++;
-
-            if (currentQuestion < questions.length) {
-                loadQuestion();
-            } else {
-                submitTest();
-            }
-        }
-
-        // Submit the test
-        function submitTest() {
-            clearInterval(timer);
-
-            // Calculate score and prepare answer data
-            let score = 0;
-            const answerData = userAnswers.map((answer, index) => {
-                const isCorrect = answer === questions[index].answer;
-                if (isCorrect) score++;
-                return isCorrect ? 1 : 0;
-            });
-
-            // Calculate percentage
-            const percentage = ((score / questions.length) * 100).toFixed(1);
-
-            // Save results
-            saveResults(regNumber, studentName, answerData, score, percentage);
-
-            // Show submission section
-            testSection.classList.add('hidden');
-            submissionSection.classList.remove('hidden');
-
-            // Display results
-            studentResultDetails.innerHTML = `
-                <p><strong>Register No:</strong> ${regNumber}</p>
-                <p><strong>Name:</strong> ${studentName}</p>
-                <p><strong>Test Date:</strong> April 8, 2025</p>
-                <p><strong>Submission Time:</strong> ${new Date().toLocaleTimeString()}</p>
-            `;
-
-            scoreDisplay.textContent = `${score} / ${questions.length}`;
-
-            resultSummary.innerHTML = `
-                <p><strong>Percentage:</strong> ${percentage}%</p>
-                <p><strong>Correct Answers:</strong> ${score}</p>
-                <p><strong>Incorrect Answers:</strong> ${questions.length - score}</p>
-                <p><strong>Unanswered:</strong> ${userAnswers.filter(a => a === null).length}</p>
-            `;
-        }
-
-        // Save results to Google Sheets
-        function saveResults(regNumber, name, answers, score, percentage) {
-            const scriptURL = 'https://script.google.com/macros/s/AKfycbwQ2ogScUmNWvEkPwMRNyOzhX74Kgu2vx3Enmc09DJAflGURATOeMzG9KZJI_fyh0Al/exec';
-
-            const data = {
-                regNumber: regNumber,
-                name: name,
-                answers: answers,
-                score: score,
-                percentage: percentage,
-                timestamp: new Date().toISOString()
-            };
-
-            fetch(scriptURL, {
-                method: 'POST',
-                mode: 'no-cors',
-                body: JSON.stringify(data),
-                headers: {
-                    'Content-Type': 'application/json'
-                }
-            })
-            .then(() => {
-                console.log('Results submitted successfully');
-                // Remove any offline saved results for this student
-                const offlineResults = JSON.parse(localStorage.getItem('offlineTestResults') || '[]');
-                const updatedOfflineResults = offlineResults.filter(r => r.regNumber !== regNumber);
-                localStorage.setItem('offlineTestResults', JSON.stringify(updatedOfflineResults));
-            })
-            .catch(error => {
-                console.error('Error saving results:', error);
-                // Fallback to localStorage
-                const offlineResults = JSON.parse(localStorage.getItem('offlineTestResults') || '[]');
-                offlineResults.push(data);
-                localStorage.setItem('offlineTestResults', JSON.stringify(offlineResults));
-                alert("Your results have been saved locally and will be submitted when you reconnect.");
-            });
-        }
-
-        // Check for and submit any offline results when page loads
-        function checkOfflineResults() {
-            const offlineResults = JSON.parse(localStorage.getItem('offlineTestResults') || '[]');
-            if (offlineResults.length > 0) {
-                // Try to submit each offline result
-                offlineResults.forEach(result => {
-                    saveResults(result.regNumber, result.name, result.answers, result.score, result.percentage);
-                });
-            }
-        }
-
-        // Initialize the page
-        window.addEventListener('load', checkOfflineResults);
-    </script>
+// Initialize the page
+window.addEventListener('load', checkOfflineResults);
+</script>
 </body>
 </html>
